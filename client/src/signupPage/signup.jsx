@@ -13,13 +13,13 @@ const LoginSignupForm = () => {
     name: "",
     email: "",
     password: "",
-    role: "user",
+    role: "",
   });
 
   const [loginInfo, setLoginInfo] = useState({
     email: "",
     password: "",
-    role: "user",
+    role: "",
   });
 
   const navigate = useNavigate();
@@ -42,7 +42,7 @@ const LoginSignupForm = () => {
     }
 
     try {
-      const url = `http://localhost:8080/auth/signup`;
+      const url = `http://localhost:8081/auth/signup`;
       const response = await fetch(url, {
         method: "POST",
         headers: {
@@ -92,7 +92,7 @@ const LoginSignupForm = () => {
       return handleError("email and password are required");
     }
     try {
-      const url = `http://localhost:8080/auth/login`;
+      const url = `http://localhost:8081/auth/login`;
       const response = await fetch(url, {
         method: "POST",
         headers: {
