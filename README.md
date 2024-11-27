@@ -14,6 +14,6 @@ the Ideas we are working to implement right now:
 
 # tech-stack
 
-frontend : ReactJS , materialUI , shadCN , tailwindCSS
-backend : NodeJS/ExpressJS , MongoDB , Twilio , flask and fastAPI
+frontend : ReactJS , materialUI , shadCN , tailwindCSS <br/>
+backend : NodeJS/ExpressJS , MongoDB , Twilio , flask and fastAPI <br/>
 ML : python , tensorflow , scikit-Learn , keras , numpy , pandas
