@@ -1,4 +1,4 @@
-# project kisanMadat(KM)
+# project KrishiSeva(KM)
 
 Farmers face challenges in deciding optimal crops for their land, mitigating risks from unpredictable weather, and accessing essential services. This AI-powered platform leverages machine learning to recommend the best crops for specific locations, provides real-time weather alerts, and features a marketplace for farmers to lend or access critical services, enhancing agricultural productivity and resilience.
 
