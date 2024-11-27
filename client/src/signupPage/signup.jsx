@@ -13,11 +13,13 @@ const LoginSignupForm = () => {
     name: "",
     email: "",
     password: "",
+    role: "user",
   });
 
   const [loginInfo, setLoginInfo] = useState({
     email: "",
     password: "",
+    role: "user",
   });
 
   const navigate = useNavigate();
@@ -32,10 +34,13 @@ const LoginSignupForm = () => {
 
   const handleSignup = async (e) => {
     e.preventDefault();
-    const { name, email, password } = signupInfo;
-    if (!name || !email || !password) {
-      return handleError("name, email and password are required");
+    const { name, email, password, role } = signupInfo;
+    console.log("Attempting signup with:", signupInfo);
+
+    if (!name || !email || !password || !role) {
+      return handleError("All fields are required");
     }
+
     try {
       const url = `http://localhost:8080/auth/signup`;
       const response = await fetch(url, {
@@ -43,24 +48,32 @@ const LoginSignupForm = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(signupInfo),
+        body: JSON.stringify({
+          name: name.trim(),
+          email: email.trim().toLowerCase(),
+          password,
+          role,
+        }),
       });
+
       const result = await response.json();
-      const { success, message, error } = result;
-      if (success) {
-        handleSuccess(message);
+      console.log("Signup response:", result);
+
+      if (result.success) {
+        handleSuccess(result.message);
         setTimeout(() => {
-          navigate("/LoginSignupForm");
+          if (role === "admin") {
+            navigate("/admin-dashboard");
+          } else {
+            navigate("/home");
+          }
         }, 1000);
-      } else if (error) {
-        const details = error?.details[0].message;
-        handleError(details);
-      } else if (!success) {
-        handleError(message);
+      } else {
+        handleError(result.message || "Signup failed");
       }
-      console.log(result);
     } catch (err) {
-      handleError(err);
+      console.error("Signup error:", err);
+      handleError("An error occurred during signup");
     }
   };
 
@@ -74,8 +87,8 @@ const LoginSignupForm = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    const { email, password } = loginInfo;
-    if (!email || !password) {
+    const { email, password, role } = loginInfo;
+    if (!email || !password || !role) {
       return handleError("email and password are required");
     }
     try {
@@ -88,13 +101,26 @@ const LoginSignupForm = () => {
         body: JSON.stringify(loginInfo),
       });
       const result = await response.json();
-      const { success, message, jwtToken, name, error } = result;
+      const {
+        success,
+        message,
+        jwtToken,
+        name,
+        error,
+        role: userRole,
+      } = result;
       if (success) {
         handleSuccess(message);
         localStorage.setItem("token", jwtToken);
         localStorage.setItem("loggedInUser", name);
+        localStorage.setItem("userRole", userRole);
+
         setTimeout(() => {
-          navigate("/Home");
+          if (userRole === "admin") {
+            navigate("/admin-dashboard");
+          } else {
+            navigate("/home");
+          }
         }, 1000);
       } else if (error) {
         const details = error?.details[0].message;
@@ -105,6 +131,14 @@ const LoginSignupForm = () => {
       console.log(result);
     } catch (err) {
       handleError(err);
+    }
+  };
+
+  const handleRoleSelect = (selectedRole, formType) => {
+    if (formType === "signup") {
+      setSignupInfo((prev) => ({ ...prev, role: selectedRole }));
+    } else {
+      setLoginInfo((prev) => ({ ...prev, role: selectedRole }));
     }
   };
 
@@ -177,6 +211,30 @@ const LoginSignupForm = () => {
               value={signupInfo.password}
               className="w-full p-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
+            <div className="w-full flex gap-2">
+              <button
+                type="button"
+                onClick={() => handleRoleSelect("user", "signup")}
+                className={`flex-1 p-3 rounded-lg border ${
+                  signupInfo.role === "user"
+                    ? "bg-[#0367a6] text-white"
+                    : "bg-white text-gray-700"
+                } transition-colors`}
+              >
+                User
+              </button>
+              <button
+                type="button"
+                onClick={() => handleRoleSelect("admin", "signup")}
+                className={`flex-1 p-3 rounded-lg border ${
+                  signupInfo.role === "admin"
+                    ? "bg-[#0367a6] text-white"
+                    : "bg-white text-gray-700"
+                } transition-colors`}
+              >
+                Admin
+              </button>
+            </div>
             <button
               type="submit"
               className="mt-4 bg-gradient-to-r from-[#0367a6] to-[#008997] text-white rounded-full px-12 py-3 text-sm font-semibold uppercase tracking-wider hover:opacity-90 transition-opacity focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -217,6 +275,30 @@ const LoginSignupForm = () => {
               value={loginInfo.password}
               className="w-full p-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
+            <div className="w-full flex gap-2">
+              <button
+                type="button"
+                onClick={() => handleRoleSelect("user", "login")}
+                className={`flex-1 p-3 rounded-lg border ${
+                  loginInfo.role === "user"
+                    ? "bg-[#0367a6] text-white"
+                    : "bg-white text-gray-700"
+                } transition-colors`}
+              >
+                User
+              </button>
+              <button
+                type="button"
+                onClick={() => handleRoleSelect("admin", "login")}
+                className={`flex-1 p-3 rounded-lg border ${
+                  loginInfo.role === "admin"
+                    ? "bg-[#0367a6] text-white"
+                    : "bg-white text-gray-700"
+                } transition-colors`}
+              >
+                Admin
+              </button>
+            </div>
             <a
               href="#"
               className="text-sm text-gray-600 hover:text-gray-800 transition-colors"

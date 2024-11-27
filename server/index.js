@@ -1,34 +1,36 @@
 const express = require("express");
-const app = express();
-const bodyParser = require("body-parser");
 const cors = require("cors");
-const AuthRouter = require("./Routes/AuthRouter");
-const ProductRouter = require("./Routes/ProductRouter");
-const path = require("path");
+const mongoose = require("mongoose");
+const authRoutes = require("./Routes/authRoutes");
 
-require("dotenv").config();
-require("./Models/db");
-const PORT = process.env.PORT || 8080;
+const app = express();
 
-app.get("/ping", (req, res) => {
-  res.send("PONG");
+// MongoDB Connection
+mongoose
+  .connect("mongodb://localhost:27017/kisaanGyan", {
+   
+  })
+  .then(() => console.log("Connected to MongoDB"))
+  .catch((err) => console.error("MongoDB connection error:", err));
+
+// Middleware
+app.use(cors());
+app.use(express.json());
+
+// Routes
+app.use("/auth", authRoutes);
+
+// Error handling middleware
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).json({
+    success: false,
+    message: "Something went wrong!",
+    error: err.message,
+  });
 });
 
-app.use(bodyParser.json());
-app.use(
-  cors({
-    methods: ["POST", "GET"],
-    credentials: true,
-  })
-);
-app.use("/auth", AuthRouter);
-app.use("/products", ProductRouter);
-
-if (process.env.NODE_ENV === "production") {
-  const dirPath = path.resolve();
-  app.use(express.static(path.join(dirPath)));
-}
-
+const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
-  console.log(`Server is running on ${PORT}`);
+  console.log(`Server is running on port ${PORT}`);
 });

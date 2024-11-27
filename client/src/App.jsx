@@ -1,19 +1,40 @@
-import "./index.css";
-import { SmoothScrollHero } from "./landingPage/landingPage";
-import { Routes, Route } from "react-router-dom";
-import { Home } from "./mainPage/Home";
+import { Routes, Route, Navigate } from "react-router-dom";
 import LoginSignupForm from "./signupPage/signup";
-// import HotelSearch from "./test";
+import Home from "./components/Home";
+import AdminDashboard from "./components/AdminDashboard";
+import ProtectedRoute from "./components/ProtectedRoute";
+import { SmoothScrollHero } from "./landingPage/landingPage";
 
 function App() {
   return (
-    <>
-      <Routes>
-        <Route path="/" element={<SmoothScrollHero />} />
-        <Route path="/LoginSignupForm" element={<LoginSignupForm />} />
-        <Route path="/home" element={<Home />} />
-      </Routes>
-    </>
+    <Routes>
+      {/* Public Routes */}
+      <Route path="/" element={<SmoothScrollHero />} />
+      <Route path="/signup" element={<LoginSignupForm />} />
+      <Route path="/login" element={<LoginSignupForm />} />
+      {/* Protected User Routes */}
+      <Route
+        path="/home"
+        element={
+          <ProtectedRoute allowedRoles={["user", "admin"]}>
+            <Home />
+          </ProtectedRoute>
+        }
+      />
+
+      {/* Protected Admin Routes */}
+      <Route
+        path="/admin-dashboard"
+        element={
+          <ProtectedRoute allowedRoles={["admin"]}>
+            <AdminDashboard />
+          </ProtectedRoute>
+        }
+      />
+
+      {/* Catch all route - redirect to login */}
+      <Route path="*" element={<Navigate to="/login" />} />
+    </Routes>
   );
 }
 
