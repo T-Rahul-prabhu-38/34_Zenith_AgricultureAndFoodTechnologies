@@ -27,7 +27,7 @@ export const Sidebar = () => {
     <div className="admin-navbar">
       <div className="navbar-container">
         <div className="flex items-center">
-          <h2 className="nav-brand">FarmConnect</h2>
+          <h2 className="nav-brand">KrishiSeva</h2>
           <nav className="nav-menu">
             {menuItems.map((item) => {
               const Icon = item.icon;

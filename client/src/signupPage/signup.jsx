@@ -3,8 +3,9 @@ import { useNavigate } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import { handleError, handleSuccess } from "../utils";
 import "react-toastify/dist/ReactToastify.css";
-import signupImgae from "./waterfalls.jpeg";
+import signupImgae from "./right.jpg";
 import leftImage from "./left.jpg";
+import mainImg from "./main.jpg";
 
 const LoginSignupForm = () => {
   const [isRightPanelActive, setIsRightPanelActive] = useState(false);
@@ -147,7 +148,7 @@ const LoginSignupForm = () => {
       className="min-h-screen w-full grid place-items-center bg-[#e9e9e9] p-4"
       style={{
         backgroundImage:
-          "url(https://res.cloudinary.com/dci1eujqw/image/upload/v1616769558/Codepen/waldemar-brandt-aThdSdgx0YM-unsplash_cnq4sb.jpg)",
+          `url(${mainImg})`,
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundColor: "#e9e9e9", // Fallback color
@@ -157,7 +158,7 @@ const LoginSignupForm = () => {
         className="relative bg-white rounded-xl shadow-2xl w-full max-w-[758px] min-h-[480px] overflow-hidden"
         style={{
           backgroundImage:
-            "url(https://res.cloudinary.com/dci1eujqw/image/upload/v1616769558/Codepen/waldemar-brandt-aThdSdgx0YM-unsplash_cnq4sb.jpg)",
+            `url(${mainImg})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
           backgroundColor: "#e9e9e9", // Fallback color
