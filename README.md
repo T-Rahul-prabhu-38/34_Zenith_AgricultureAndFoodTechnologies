@@ -17,3 +17,6 @@ the Ideas we are working to implement right now:
 frontend : ReactJS , materialUI , shadCN , tailwindCSS <br/>
 backend : NodeJS/ExpressJS , MongoDB , Twilio , flask and fastAPI <br/>
 ML : python , tensorflow , scikit-Learn , keras , numpy , pandas
+
+
+https://github.com/user-attachments/assets/cea4f686-40ea-46fb-8393-693ed72b3aa6
