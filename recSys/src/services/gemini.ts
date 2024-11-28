@@ -1,6 +1,6 @@
 import { GoogleGenerativeAI } from '@google/generative-ai';
 
-const genAI = new GoogleGenerativeAI("AIzaSyC1Ft_Vk3oEOqEF6n1Xv5rBxjl2o1soss0");
+const genAI = new GoogleGenerativeAI(process.env.CLAUDE_API);
 
 export async function getCropRecommendation(
   weather: string,
